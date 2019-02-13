@@ -6,7 +6,7 @@
 # Paths to common dependencies
 #
 # Working directories
-ROOT            := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+export ROOT            := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 SRC_DIR         := $(ROOT)/src/main
 OBJECT_DIR      := $(ROOT)/obj/main
 BIN_DIR         := $(ROOT)/obj
@@ -108,10 +108,10 @@ clean:
 #
 
 stm32f4: $(MAKEFILE_LIST) 
-	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_HW=AUAV_X2V1  LINKER_FILE=src/link/STM32F407VGTx_FLASH.ld TARGET_FILE_NAME=$@
+	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_MCU=STM32F4xx TARGET_HW=GS600AD-04-29  LINKER_FILE=src/link/STM32F407VGTx_FLASH.ld TARGET_FILE_NAME=$@
 
 stm32f0: $(MAKEFILE_LIST) 
-	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_HW=PX4_FMU_V1 LINKER_FILE=src/link/STM32L052C6Tx_FLASH.ld TARGET_FILE_NAME=$@
+	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_MCU=STM32L0xx TARGET_HW=GS700 LINKER_FILE=src/link/STM32L052C6Tx_FLASH.ld TARGET_FILE_NAME=$@
 
 auavx2v1_bl: $(MAKEFILE_LIST) $(LIBOPENCM3)
 	${MAKE} ${MKFLAGS} -f  Makefile.f4 TARGET_HW=AUAV_X2V1  LINKER_FILE=stm32f4.ld TARGET_FILE_NAME=$@

@@ -13,8 +13,7 @@
 ######################################
 # target
 ######################################
-TARGET = STM32F4xx
-TARGET_DIR = $(LIBSTM32)/STM32F4xx
+TARGET = $(TARGET_HW)
 
 
 ######################################
@@ -32,51 +31,6 @@ OPT = -O3
 # Build path
 #BUILD_DIR = build
 BUILD_DIR = $(BUILD_DIR_ROOT)/$(TARGET)
-
-######################################
-# source
-######################################
-# C sources
-C_SOURCES =  \
-$(TARGET_DIR)/Src/main.c \
-$(TARGET_DIR)/Src/gpio.c \
-$(TARGET_DIR)/Src/adc.c \
-$(TARGET_DIR)/Src/i2c.c \
-$(TARGET_DIR)/Src/iwdg.c \
-$(TARGET_DIR)/Src/tim.c \
-$(TARGET_DIR)/Src/usart.c \
-$(TARGET_DIR)/Src/wwdg.c \
-$(TARGET_DIR)/Src/stm32f4xx_it.c \
-$(TARGET_DIR)/Src/stm32f4xx_hal_msp.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_gpio.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_exti.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_i2c.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_tim.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usart.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rcc.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_utils.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
-$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
-$(TARGET_DIR)/Src/system_stm32f4xx.c  
-
-# ASM sources
-ASM_SOURCES =  \
-$(TARGET_DIR)/startup_stm32f407xx.s
-
 
 #######################################
 # binaries
@@ -97,113 +51,23 @@ SZ = $(PREFIX)size
 endif
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
- 
-#######################################
-# CFLAGS
-#######################################
-# cpu
-CPU = -mcpu=cortex-m4
-
-# fpu
-FPU = -mfpu=fpv4-sp-d16
-
-# float-abi
-FLOAT-ABI = -mfloat-abi=hard
-
-# mcu
-MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
-
-# macros for gcc
-# AS defines
-AS_DEFS = 
-
-# C defines
-C_DEFS =  \
--DUSE_FULL_LL_DRIVER \
--DUSE_HAL_DRIVER \
--DSTM32F407xx
-
-
-# AS includes
-AS_INCLUDES = 
-
-# C includes
-C_INCLUDES =  \
--I$(TARGET_DIR)/Inc \
--I$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc \
--I$(TARGET_DIR)/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy \
--I$(TARGET_DIR)/Drivers/CMSIS/Device/ST/STM32F4xx/Include \
--I$(TARGET_DIR)/Drivers/CMSIS/Include \
--I$(TARGET_DIR)/Drivers/CMSIS/Include
 
 
 # compile gcc flags
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+ASFLAGS = -Wall -fdata-sections -ffunction-sections
 
-CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+CFLAGS = -Wall -fdata-sections -ffunction-sections
 
-ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
-endif
+######################################
+# source
+######################################
+# C sources
+C_SOURCES =  
+# ASM sources
+ASM_SOURCES =  
 
-
-# Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
-
-
-#######################################
-# LDFLAGS
-#######################################
-# link script
-LDSCRIPT = $(TARGET_DIR)/STM32F407VGTx_FLASH.ld
-
-# libraries
-LIBS = -lc -lm -lnosys 
-LIBDIR = 
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
-
-# default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
-
-
-#######################################
-# build the application
-#######################################
-# list of objects
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES)))
-# list of ASM program objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES)))
-
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
-	$(AS) -c $(CFLAGS) $< -o $@
-
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
-	$(SZ) $@
-
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(HEX) $< $@
-	
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(BIN) $< $@	
-	
-$(BUILD_DIR):
-	mkdir -p $@		
-
-#######################################
-# clean up
-#######################################
-clean:
-	-rm -fR $(BUILD_DIR)
-  
-#######################################
-# dependencies
-#######################################
--include $(wildcard $(BUILD_DIR)/*.d)
+include $(ROOT)/make/mcu/$(TARGET_MCU).mk
+#include $(ROOT)/make/source.mk
+include $(ROOT)/make/rules.mk
 
 # *** EOF ***
