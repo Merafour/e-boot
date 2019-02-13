@@ -17,6 +17,7 @@ LINKER_DIR      := $(ROOT)/src/main/target/link
 export BUILD_DIR_ROOT ?= build
 export BL_BASE		?= $(wildcard .)
 export LIBOPENCM3	?= $(ROOT)/modules/libopencm3
+export LIBSTM32 	?= $(ROOT)/modules/libstm32
 MKFLAGS=--no-print-directory
 #
 # Tools
@@ -87,10 +88,15 @@ TARGETS_USBS	= \
 	usbs_f1_bl_update_enc \
 	music_play_12Kbl \
 	music_play_16Kbl 
+
+TARGETS_STM32	= \
+	stm32f4 \
+	stm32f0 
+
 TARGETS	+= $(TARGETS_USBS)
 
 #all:	$(TARGETS) sizes
-all:	$(TARGETS_USBS) sizes
+all:	$(TARGETS_STM32) sizes
 
 clean:
 	cd modules/libopencm3 && make --no-print-directory clean && cd ..
@@ -100,6 +106,12 @@ clean:
 #
 # Specific bootloader targets.
 #
+
+stm32f4: $(MAKEFILE_LIST) 
+	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_HW=AUAV_X2V1  LINKER_FILE=src/link/STM32F407VGTx_FLASH.ld TARGET_FILE_NAME=$@
+
+stm32f0: $(MAKEFILE_LIST) 
+	${MAKE} ${MKFLAGS} -f  STM32.mk TARGET_HW=PX4_FMU_V1 LINKER_FILE=src/link/STM32L052C6Tx_FLASH.ld TARGET_FILE_NAME=$@
 
 auavx2v1_bl: $(MAKEFILE_LIST) $(LIBOPENCM3)
 	${MAKE} ${MKFLAGS} -f  Makefile.f4 TARGET_HW=AUAV_X2V1  LINKER_FILE=stm32f4.ld TARGET_FILE_NAME=$@

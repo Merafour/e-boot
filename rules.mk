@@ -26,10 +26,12 @@ debug:
 # Compile and generate dependency files
 $(BUILD_DIR)/%.o:	%.c
 	@echo Generating object $@
+	$(V1) mkdir -p $(dir $@)
 	$(CC) -c -MMD $(FLAGS) -o $@ $<
 
 $(BUILD_DIR)/%.o:	%.S
 	@echo Generating object $@
+	$(V1) mkdir -p $(dir $@)
 	$(CC) -c -MMD $(FLAGS) -o $@ $*.S
 
 # Make the build directory
