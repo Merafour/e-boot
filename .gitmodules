@@ -1,3 +1,6 @@
 [submodule "modules/libopencm3"]
 	path = modules/libopencm3
 	url = https://github.com/libopencm3/libopencm3.git
+[submodule "modules/libstm32"]
+	path = modules/libstm32
+	url = https://github.com/Merafour/libstm32.git
