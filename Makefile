@@ -93,7 +93,7 @@ TARGETS	+= $(TARGETS_USBS)
 all:	$(TARGETS_USBS) sizes
 
 clean:
-	cd libopencm3 && make --no-print-directory clean && cd ..
+	cd modules/libopencm3 && make --no-print-directory clean && cd ..
 	rm -f *.elf *.bin # Remove any elf or bin files contained directly in the Bootloader directory
 	rm -rf build # Remove build directories
 
