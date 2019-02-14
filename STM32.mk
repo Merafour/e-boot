@@ -65,8 +65,11 @@ CFLAGS = -Wall -fdata-sections -ffunction-sections
 C_SOURCES =  
 # ASM sources
 ASM_SOURCES =  
-
+OBJECTS = 
 include $(ROOT)/make/mcu/$(TARGET_MCU).mk
+# compile gcc flags
+ASFLAGS += $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 #include $(ROOT)/make/source.mk
 include $(ROOT)/make/rules.mk
 

@@ -18,15 +18,17 @@ $(HW_LIB)/Src/stm32f4xx_it.c \
 $(HW_LIB)/Src/stm32f4xx_hal_msp.c \
 $(HW_LIB)/Src/system_stm32f4xx.c  
 
-C_SOURCES += $(STM32F4xx_SOURCES)
+C_SOURCES = $(STM32F4xx_SOURCES)
 
 CMSIS_DIR      := $(HW_LIB)/Drivers/CMSIS
 STDPERIPH_DIR   = $(HW_LIB)/Drivers/STM32F4xx_HAL_Driver
 STDPERIPH_SRC   = $(notdir $(wildcard $(STDPERIPH_DIR)/Src/*.c))
+STDPERIPH_SRC2   = $(addprefix $(STDPERIPH_DIR)/Src/,$(STDPERIPH_SRC))
 EXCLUDES        =
 
-C_SOURCES += $(STDPERIPH_SRC)
+C_SOURCES += $(STDPERIPH_SRC2)
 VPATH       := $(VPATH):$(STDPERIPH_DIR)/Src
+
 # ASM sources
 ASM_SOURCES +=  \
 $(HW_LIB)/startup_stm32f407xx.s
@@ -68,9 +70,5 @@ C_INCLUDES =  \
 -I$(HW_LIB)/Drivers/CMSIS/Include \
 -I$(HW_LIB)/Drivers/CMSIS/Include
 
-# compile gcc flags
-ASFLAGS += $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
-CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 # *** EOF ***

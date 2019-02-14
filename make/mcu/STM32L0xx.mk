@@ -19,7 +19,7 @@ HW_LIB = $(LIBSTM32)/$(TARGET_MCU)
 # source
 ######################################
 # C sources
-STM32F4xx_SOURCES =  \
+STM32L0xx_SOURCES =  \
 $(HW_LIB)/Src/main.c \
 $(HW_LIB)/Src/gpio.c \
 $(HW_LIB)/Src/i2c.c \
@@ -36,14 +36,15 @@ $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
 $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
 $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c  
 
-C_SOURCES += $(STM32F4xx_SOURCES)
+C_SOURCES += $(STM32L0xx_SOURCES)
 
 CMSIS_DIR      := $(HW_LIB)/Drivers/CMSIS
 STDPERIPH_DIR   = $(HW_LIB)/Drivers/STM32L0xx_HAL_Driver
 STDPERIPH_SRC   = $(notdir $(wildcard $(STDPERIPH_DIR)/Src/*.c))
+STDPERIPH_SRC2   = $(addprefix $(STDPERIPH_DIR)/Src/,$(STDPERIPH_SRC))
 EXCLUDES        =
 
-C_SOURCES += $(STDPERIPH_SRC)
+C_SOURCES += $(STDPERIPH_SRC2)
 VPATH       := $(VPATH):$(STDPERIPH_DIR)/Src
 
 # ASM sources
@@ -89,11 +90,5 @@ C_INCLUDES =  \
 -I$(HW_LIB)/Drivers/CMSIS/Device/ST/STM32L0xx/Include \
 -I$(HW_LIB)/Drivers/CMSIS/Include \
 -I$(HW_LIB)/Drivers/CMSIS/Include
-
-
-# compile gcc flags
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
-CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 # *** EOF ***
