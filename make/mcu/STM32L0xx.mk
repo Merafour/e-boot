@@ -13,7 +13,6 @@
 ######################################
 # target
 ######################################
-HW_LIB = $(LIBSTM32)/$(TARGET_MCU)
 
 ######################################
 # source
@@ -36,7 +35,7 @@ $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
 $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
 $(HW_LIB)/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c  
 
-C_SOURCES += $(STM32L0xx_SOURCES)
+#C_SOURCES += $(STM32L0xx_SOURCES)
 
 CMSIS_DIR      := $(HW_LIB)/Drivers/CMSIS
 STDPERIPH_DIR   = $(HW_LIB)/Drivers/STM32L0xx_HAL_Driver
